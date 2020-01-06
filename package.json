@@ -1,0 +1,28 @@
+{
+  "name": "eldardap",
+  "version": "1.0.0",
+  "description": "One and only RDAP client you ever need",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.19.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EPolishchuk/e1dardap.git"
+  },
+  "keywords": [
+    "rdap",
+    "whois",
+    "rdap-client",
+    "iana",
+    "ripe",
+    "domain",
+    "information"
+  ],
+  "author": "Eldar Polishchuk",
+  "license": "ISC"
+}
