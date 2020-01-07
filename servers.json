@@ -1,4 +1,3 @@
-module.exports = 
 {
   "arab":  "http://rdap.nic.arab/" ,
   "dubai":  "http://rdap.nic.dubai/" ,

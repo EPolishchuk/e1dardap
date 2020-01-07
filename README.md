@@ -7,6 +7,8 @@ The Registration Data Access Protocol (RDAP) enables users to access current reg
 
 # Example of usage
 ```js
+const rdap = require('eldardap');
+
 const getDomain = async () => {
   const result = await rdap('e1dar.com');  
   return result;

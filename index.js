@@ -1,26 +1,33 @@
-const tld = require("./servers.js");
+const tld = require("./servers.json");
+const ipbase = require("./ip.json");
 const axios = require('axios');
 
 const error = {
-  NOTLD: 'domain zone not found'
+  NOTYPE: 'RDAP doesn\'t support this type',
+  NOTLD: 'domain zone not found or don\'t support RDAP',
+  NOIP: 'IP range not found or don\'t support RDAP'
 };
 
-const RESULT = {
-  TRUE: true,
-  FALSE: false
+const timeout = 2000;
+
+const query = async (resource, type)  => {
+  switch (type) {
+    case 'domain':       
+      return domain(resource);
+    case 'ip':
+      return ip(resource); 
+    default:
+      throw new Error(`${error.NOTYPE}. \nYou send type: ${type}`);     
+  }
+
 }
 
-const query = async (domain, {timeout = 2000} = {})  => {
+const domain = async (domain) => {
   const tldName = domain.substring(domain.indexOf(".")+1);
 
-  if (typeof tld[tldName] === 'undefined') {
-    return {
-      result: RESULT.FALSE,
-      rdap: error.NOTLD,
-      description: {
-          dnszone: tldName
-        }
-      }
+  if (typeof tld[tldName] === 'undefined') {      
+      throw new Error(`${error.NOTLD}. \n Try again later or check input
+                      \nYour domain zone: ${tldName}`);
   }
 
   else {
@@ -37,16 +44,46 @@ const query = async (domain, {timeout = 2000} = {})  => {
     if (res.status >= 400 && res.status < 500) {
       // TODO: report this condition properly
       console.error(JSON.stringify(res.data));
-      throw new Error(`Error: ${res.status}. \n Try again later or check input`);        
+      throw new Error(`Error: ${res.status}. \nTry again later or check input`);        
     } else if (res.status != 200) {
       // TODO: report this condition properly
       console.error(JSON.stringify(res.data));
-      throw new Error(`Error: ${res.status}. \n Try again later or check input`);       
+      throw new Error(`Error: ${res.status}. \nTry again later or check input`);       
     } else {
-      return {
-        result: RESULT.TRUE,
-        rdap: res.data
-      };
+      return res.data;
+    }
+  }
+}
+
+const ip = async (ip) => {
+  const firstOctet = ip.includes(':') ? ip.split(':')[0] : ip.split('.')[0];
+
+  if (typeof ipbase[firstOctet] === 'undefined') {      
+      throw new Error(`${error.NOIP}. \nTry again later or check input
+                      \nFirst octet from your IP: ${firstOctet}`);
+  }
+
+  else {
+    const query_url = ipbase[firstOctet] + 'ip/' + ip;   
+
+    const res = await axios.get(query_url, {
+      timeout,
+      validateStatus: false,
+      headers: {
+        'Accept': 'application/rdap+json'
+      }
+    });
+
+    if (res.status >= 400 && res.status < 500) {
+      // TODO: report this condition properly
+      console.error(JSON.stringify(res.data));
+      throw new Error(`Error: ${res.status}. \nTry again later or check input`);        
+    } else if (res.status != 200) {
+      // TODO: report this condition properly
+      console.error(JSON.stringify(res.data));
+      throw new Error(`Error: ${res.status}. \nTry again later or check input`);       
+    } else {
+      return res.data;
     }
   }
 }

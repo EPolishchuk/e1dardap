@@ -1,6 +1,6 @@
 {
   "name": "eldardap",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "One and only RDAP client you ever need",
   "main": "index.js",
   "dependencies": {
