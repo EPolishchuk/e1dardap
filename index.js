@@ -11,7 +11,10 @@ const error = {
 const timeout = 2000;
 
 const query = async (resource, type)  => {
-  switch (type) {
+  if (typeof type === 'undefined' || !(typeof type === 'string'))
+    throw new Error(`${error.NOTYPE}. \nYou send type: ${type}`);
+
+  switch (type.toLowerCase()) {
     case 'domain':       
       return domain(resource);
     case 'ip':
