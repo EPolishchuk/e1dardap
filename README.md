@@ -6,11 +6,23 @@ RDAP client to retrieve information about domain names. Right now 1196 domain zo
 The Registration Data Access Protocol (RDAP) enables users to access current registration data and was created as an eventual replacement for the WHOIS protocol. RDAP was developed by the technical community in the Internet Engineering Task Force (IETF).
 
 # Example of usage
+To get information about domain:
+
 ```js
 const rdap = require('eldardap');
 
 const getDomain = async () => {
-  const result = await rdap('e1dar.com');  
+  const result = await rdap('e1dar.com', 'domain');  
+  return result;
+}
+```
+
+To get information about IP:
+```js
+const rdap = require('eldardap');
+
+const getIP = async () => {
+  const result = await rdap('8.8.8.8', 'ip');  
   return result;
 }
 ```
