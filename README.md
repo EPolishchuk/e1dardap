@@ -2,7 +2,7 @@
 
 RDAP client to retrieve information about domain names. Right now 1196 domain zones using RDAP, which will slowly replace WHOIS.
 
-#What is RDAP
+# What is RDAP
 The Registration Data Access Protocol (RDAP) enables users to access current registration data and was created as an eventual replacement for the WHOIS protocol. RDAP was developed by the technical community in the Internet Engineering Task Force (IETF).
 
 # Example of usage
